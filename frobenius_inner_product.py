@@ -20,8 +20,13 @@ print('Tensor 2')
 print(torch.sparse_coo_tensor(indexB, valueB, [3,2]).to_dense())
 
 
-# creates triples from a sparse tensor
 def create_triple(sparse_coo_tensor):
+	""" Create triples from a sparse tensor
+    Args:
+        sparse_coo_tensor : The Pytorch sparse tensor representation of a matrix
+        
+    :rtype: (:class:`List`)
+    """
 	indicesA = sparse_coo_tensor.coalesce().indices()
 	npindicesA=indicesA.numpy()
 	valsA = sparse_coo_tensor.coalesce().values()
@@ -43,6 +48,17 @@ def create_triple(sparse_coo_tensor):
 # takes in 4 tensors and 2 ints
 def frobenius_vals(indexA, valueA, indexB, valueB, ydim, xdim):
 # def frobenius_vals(tensor1,tensor2):
+	""" Frobenius inner product of two matrices given 4 tensors and 2 ints
+    Args:
+        indexA : The index LongTensor of first sparse matrix.
+        valueA : The value Tensor of first sparse matrix.
+        indexB : The index LongTensor of second sparse matrix.
+        valueB : The value Tensor of second sparse matrix.
+        ydim (int): The first dimension of either dense matrix
+        xdim (int): The shared second dimension of either dense matrix
+
+    :rtype: (:class:`List`)
+    """
 	triples_a = create_triple(torch.sparse_coo_tensor(indexA, valueA, [ydim,xdim]))
 	triples_b = create_triple(torch.sparse_coo_tensor(indexB, valueB, [ydim,xdim]))
 	print('triples_a ', triples_a)
